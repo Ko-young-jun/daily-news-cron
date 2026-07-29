@@ -5,7 +5,35 @@ on:
     - cron: '0 12 * * *'
     - cron: '0 17 * * *'name: Daily News Curation
     on:
-      schedule:
+      schedule:name: Daily News Curation
+      on:
+        schedule:
+            - cron: '0 7 * * *'
+                - cron: '0 12 * * *'
+                    - cron: '0 17 * * *'
+
+                    jobs:
+                      curate-news:
+                          runs-on: ubuntu-latest
+                              steps:
+                                    - uses: actions/checkout@v3
+                                          - name: Set up Python
+                                                  uses: actions/setup-python@v4
+                                                          with:
+                                                                    python-version: '3.9'
+                                                                          - name: Install dependencies
+                                                                                  run: pip install requests
+                                                                                        - name: Run news curation script
+                                                                                                run: python scripts/curate_news.py
+                                                                                                        env:
+                                                                                                                  NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+                                                                                                                        - name: Commit and push changes
+                                                                                                                                run: |
+                                                                                                                                          git config --local user.email "action@github.com"
+                                                                                                                                                    git config --local user.name "GitHub Action"
+                                                                                                                                                              git add -A
+                                                                                                                                                                        git commit -m "Daily news update $(date +'%Y-%m-%d')" || echo "No changes to commit"
+                                                                                                                                                                                  git push
           - cron: '0 7 * * *'
               - cron: '0 12 * * *'
                   - cron: '0 17 * * *'
